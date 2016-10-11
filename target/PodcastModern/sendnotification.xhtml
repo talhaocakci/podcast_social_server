@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Create new application metadata</title>
+
+</h:head>
+
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/mycss.css" />
+	</f:facet>
+
+	<ui:include src="common/header.xhtml" />
+
+	<div style="width: 300px; margin: auto;">
+		<h:form>
+
+			<p:panelGrid columns="1">
+
+
+				Applications:
+				<p:selectOneMenu  converter="entityConverter" value="#{notificationCDI.selectedApplication}">
+				<f:selectItems var="app" itemLabel="#{app.applicationName}" value="#{notificationCDI.applicationList}"></f:selectItems>
+				</p:selectOneMenu>
+
+				Message:
+				<p:inputText value="#{notificationCDI.message}"></p:inputText>
+
+				<h:commandButton action="#{notificationCDI.sendMessage}" value="Save"></h:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</div>
+</h:body>
+</html>

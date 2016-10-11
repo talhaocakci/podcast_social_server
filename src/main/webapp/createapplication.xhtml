@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>Create new application metadata</title>
+
+</h:head>
+
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/mycss.css" />
+	</f:facet>
+
+	<ui:include src="common/header.xhtml" />
+
+	<div style="width: 300px; margin: auto;">
+		<h:form>
+
+			<p:panelGrid columns="1">
+
+
+				Name:
+				<p:inputText
+					value="#{applicationCDI.newApplication.applicationName}"></p:inputText>
+
+				Podcasts:
+				<p:pickList id="applicationPickList" style="margin-left:10px;"
+					value="#{podcastPickListView.podcastsDualList}" var="podcast"
+					itemValue="#{podcast}" itemLabel="#{podcast.name}" converter="entityConverter"
+					showSourceControls="true" showTargetControls="true"
+					responsive="true" showSourceFilter="true" showTargetFilter="true"
+					filterMatchMode="contains">
+
+					<f:facet name="sourceCaption">Available</f:facet>
+					<f:facet name="targetCaption">Included</f:facet>
+
+				</p:pickList>
+
+				<h:commandButton action="#{applicationCDI.saveApplication}" value="Save"></h:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</div>
+</h:body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form>
+		<p:growl id="messages" />
+
+		<p:menubar>
+			<p:submenu label="Customer" icon="ui-icon-document">
+
+				<p:menuitem value="New" url="newcustomer.xhtml" />
+				<p:separator />
+				<p:menuitem value="List" url="customerlist.xhtml" />
+				<p:separator />
+				<p:menuitem value="Check Orders" url="#" />
+			</p:submenu>
+
+			<p:submenu label="Branches" icon="ui-icon-pencil">
+				<p:menuitem value="Manage" url="#"
+					icon="ui-icon-arrowreturnthick-1-w" />
+
+			</p:submenu>
+
+			<p:submenu label="Products and Buckets" icon="ui-icon-help">
+				<p:menuitem value="Products" url="manageproduct.xhtml" />
+				<p:menuitem value="Buckets" url="managebucket.xhtml" />
+			</p:submenu>
+
+			<p:submenu label="Promotions" icon="ui-icon-help">
+				<p:menuitem value="Manage" url="#" />
+			</p:submenu>
+
+
+			<f:facet name="options">
+				<p:inputText style="margin-right:10px" placeholder="Search" />
+				<p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+</ui:composition>

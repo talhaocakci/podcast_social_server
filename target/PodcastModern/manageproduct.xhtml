@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>JSF 2.0 Hello World</title>
+
+</h:head>
+
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/mycss.css" />
+	</f:facet>
+
+	<ui:include src="common/header.xhtml" />
+
+	<div style="width: 300px; margin: auto;">
+		<h:form>
+
+			<h:commandButton value="CREATE PRODUCT" type="button"
+				onclick="PF('create').show();" styleClass="mybutton">
+			</h:commandButton>
+
+			<p:dialog header="New product" widgetVar="create">
+				<h:outputText value="This dialog has nice effects." />
+				<h:panelGrid columns="2">
+					<h:outputLabel>Name</h:outputLabel>
+					<p:inputText value="#{productCDI.product.name}"></p:inputText>
+					<h:outputLabel>Price</h:outputLabel>
+					<p:inputText value="#{productCDI.product.price}"></p:inputText>
+
+				</h:panelGrid>
+
+				<h:commandButton value="Save" action="#{productCDI.save}"
+					styleClass="mybutton">
+				</h:commandButton>
+
+			</p:dialog>
+
+		</h:form>
+	</div>
+
+	<h:form id="form">
+
+
+<p:commandButton value="Update" onclick="PF('detail').show()" styleClass="mybutton"></p:commandButton>
+
+
+		<p:column style="font-weight: bold;" colspan="4">
+			<p:dataTable var="product" value="#{productCDI.productLazyModel}"
+				paginatorPosition="bottom" lazy="true" paginator="true" rows="10"
+				selectionMode="single" selection="#{productCDI.selectedProduct}"
+				id="allproducts">
+				<p:ajax event="rowSelect" update=":form:productDetail" />
+				<p:column headerText="Product Id">
+					<h:outputText value="#{product.productId}" />
+				</p:column>
+				<p:column headerText="Product Name" filterBy="#{product.name}">
+					<h:outputText value="#{product.name}" />
+				</p:column>
+				<p:column headerText="Product Price">
+					<h:outputText value="#{product.price}" />
+				</p:column>
+			</p:dataTable>
+		</p:column>
+
+
+		<p:dialog widgetVar="detail">
+			<p:outputPanel id="productDetail">
+				<h:panelGrid>
+					<h:outputText value="DETAILS"></h:outputText>
+					<p:inputText id="namec" value="#{productCDI.selectedProduct.name}"></p:inputText>
+					<p:inputText value="#{productCDI.selectedProduct.price}"></p:inputText>
+				</h:panelGrid>
+				<p:commandButton value="update" styleClass="myButton" 
+					action="#{productCDI.update}" update=":form:allproducts"></p:commandButton>
+			</p:outputPanel>
+
+		</p:dialog>
+	</h:form>
+
+</h:body>
+</html>

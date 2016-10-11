@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="PodcastModern:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="PodcastModern.war">
+      <element id="artifact" artifact-name="PodcastModern:war exploded" />
+    </root>
+  </artifact>
+</component>

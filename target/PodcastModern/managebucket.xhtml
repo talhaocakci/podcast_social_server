@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>JSF 2.0 Hello World</title>
+
+</h:head>
+
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/mycss.css" />
+	</f:facet>
+
+	<ui:include src="common/header.xhtml" />
+
+	<div style="width: 300px; margin: auto;">
+		<h:form>
+
+			<h:commandButton value="CREATE BUCKET" type="button"
+				onclick="PF('create').show();"
+				actionListener="#{bucketCDI.resetItems}" styleClass="mybutton"
+				style="margin-bottom:20px; margin-top:20px;">
+			</h:commandButton>
+
+			<p:dialog header="New bucket" widgetVar="create" modal="true">
+
+				<h:panelGrid columns="2">
+					<h:outputLabel>Name</h:outputLabel>
+					<p:inputText value="#{bucketCDI.bucket.name}"></p:inputText>
+					<h:outputLabel>Price</h:outputLabel>
+					<p:inputText value="#{bucketCDI.bucket.price}"></p:inputText>
+					<h:outputLabel>Products</h:outputLabel>
+					<p:pickList id="productBundle"
+						value="#{productPickListView.productsDualList}" var="product"
+						itemValue="#{product}" converter="entityConverter"
+						itemLabel="#{product}" showSourceControls="true"
+						showTargetControls="true" responsive="true"
+						showSourceFilter="true" showTargetFilter="true"
+						filterMatchMode="contains">
+
+						<f:facet name="sourceCaption">Available</f:facet>
+						<f:facet name="targetCaption">Included</f:facet>
+					</p:pickList>
+
+				</h:panelGrid>
+
+				<h:commandButton value="Save" action="#{bucketCDI.save}"
+					styleClass="mybutton">
+				</h:commandButton>
+
+			</p:dialog>
+
+		</h:form>
+	</div>
+
+	<h:form id="form">
+		<p:panelGrid>
+			<p:row>
+				<p:column style="font-weight: bold;" colspan="4">
+					<p:dataTable var="bucket" value="#{bucketCDI.bucketLazyModel}"
+						paginatorPosition="bottom" lazy="true" paginator="true" rows="10"
+						selectionMode="single" selection="#{bucketCDI.selectedBucket}"
+						id="allbuckets">
+						<p:ajax event="rowSelect" update=":form:bucketDetail"
+							listener="#{bucketCDI.initSelection}" />
+						<p:column headerText="Bucket Id">
+							<h:outputText value="#{bucket.bucketId}" />
+						</p:column>
+						<p:column headerText="Bucket Name">
+							<h:outputText value="#{bucket.name}" />
+						</p:column>
+						<p:column headerText="Bucket Price">
+							<h:outputText value="#{bucket.price}" />
+						</p:column>
+
+
+
+					</p:dataTable>
+
+				</p:column>
+				<p:column style="font-weight: bold;" colspan="2">
+					<p:outputPanel id="bucketDetail">
+						<h:outputText value="BUCKET DETAILS"></h:outputText>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Name:"></h:outputLabel>
+							<p:inputText id="namec" value="#{bucketCDI.selectedBucket.name}"></p:inputText>
+							<h:outputLabel value="Price:"></h:outputLabel>
+							<p:inputText value="#{bucketCDI.selectedBucket.price}"></p:inputText>
+						</h:panelGrid>
+
+						<p:pickList id="PojoPickList" style="margin-left:10px;"
+							value="#{productPickListView.productsDualList}" var="product"
+							itemValue="#{product}" itemLabel="#{product.name}"
+							showSourceControls="true" showTargetControls="true"
+							responsive="true" showSourceFilter="true" showTargetFilter="true"
+							filterMatchMode="contains">
+
+							<f:facet name="sourceCaption">Available</f:facet>
+							<f:facet name="targetCaption">Included</f:facet>
+
+						</p:pickList>
+
+						<p:commandButton value="update" styleClass="myButton"
+							action="#{bucketCDI.update}" update=":form:allbuckets"></p:commandButton>
+					</p:outputPanel>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+	</h:form>
+
+</h:body>
+</html>

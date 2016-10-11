@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>JSF 2.0 Hello World</title>
+
+</h:head>
+
+<h:body>
+	<f:facet name="last">
+		<h:outputStylesheet name="css/mycss.css" />
+	</f:facet>
+
+	<ui:include src="common/header.xhtml" />
+
+	<div style="width: 300px; margin: auto;">
+
+		<h:form id="form">
+
+
+			<p:dataTable var="cus" value="#{customerCDI.customerModel}"
+				lazy="true" paginator="true" rows="10" selectionMode="single"
+				selection="#{customerCDI.selectedCustomerToEdit}">
+				<p:ajax event="rowSelect" update=":form:customerDetail" />
+				<p:column headerText="Customer Id">
+					<h:outputText value="#{cus.customerId}" />
+				</p:column>
+				<p:column headerText="Customer Name">
+					<h:outputText value="#{cus.name}" />
+				</p:column>
+				<p:column headerText="Customer Surname">
+					<h:outputText value="#{cus.surname}" />
+				</p:column>
+
+
+
+			</p:dataTable>
+
+			<p:outputPanel id="customerDetail">
+
+				<h:panelGrid>
+					<h:outputText value="DETAILS"></h:outputText>
+					<p:inputText id="namec"
+						value="#{customerCDI.selectedCustomerToEdit.name}"></p:inputText>
+					<p:inputText value="#{customerCDI.selectedCustomerToEdit.surname}"></p:inputText>
+				</h:panelGrid>
+
+			</p:outputPanel>
+
+		</h:form>
+	</div>
+</h:body>
+</html>
