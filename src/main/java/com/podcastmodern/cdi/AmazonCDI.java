@@ -8,12 +8,8 @@
  */
 package com.podcastmodern.cdi;
 
-import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.PropertiesCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.internal.Constants;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
@@ -41,7 +37,6 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,9 +65,9 @@ public class AmazonCDI implements Serializable {
         feed.setFeedType("rss_2.0");
 
 
-        feed.setTitle("Sample Feed (created with ROME)");
-        feed.setLink("http://rome.dev.java.net");
-        feed.setDescription("This feed has been created using ROME (Java syndication utilities");
+        feed.setTitle("Java Course");
+        feed.setLink("javacore-course");
+        feed.setDescription("This is the items for java core course");
 
 
             objectListing = s3Service.listObjects(bucketName);
@@ -82,15 +77,14 @@ public class AmazonCDI implements Serializable {
                 SyndContent description;
 
                 entry = new SyndEntryImpl();
-                entry.setTitle("ROME v1.0");
+                entry.setTitle(object.getName().replace(".mp4",""));
 
-                entry.setLink("http://wiki.java.net/bin/view/Javawsxml/Rome01");
                 description = new SyndContentImpl();
                 description.setType("text/plain");
                 description.setValue(object.getName());
                 List<SyndEnclosure> enc = new ArrayList<SyndEnclosure>();
                 SyndEnclosure e = new SyndEnclosureImpl();
-                e.setUrl(generateSignedURL(object.getName()));
+                e.setUrl(object.getName());
 
 
 
@@ -133,38 +127,12 @@ public class AmazonCDI implements Serializable {
 
     }
 
-    private String generateSignedURL(String key) {
-        AmazonS3 s3client = new AmazonS3Client(new com.amazonaws.auth.AWSCredentials() {
-            @Override
-            public String getAWSAccessKeyId() {
-                return "AKIAISPPNAZRDL7OBQSA";
-            }
-
-            @Override
-            public String getAWSSecretKey() {
-                return "V07+Fftn0QcxoyCQ6lz1K20Z8uNnxNS8QCRFwkK1";
-            }
-        });
-
-        java.util.Date expiration = new java.util.Date();
-        long msec = expiration.getTime();
-        msec += 1000 * 60 * 60; // 1 hour.
-        expiration.setTime(msec);
-
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-            new GeneratePresignedUrlRequest(bucketName, key);
-        generatePresignedUrlRequest.setMethod(HttpMethod.GET); // Default.
-        generatePresignedUrlRequest.setExpiration(expiration);
-
-        URL s = s3client.generatePresignedUrl(generatePresignedUrlRequest);
-        return s.toString();
-    }
 
     protected AWSCredentials getCredentials() {
         PropertiesCredentials credentials = null;
 
         String awsAccessKey = "AKIAISPPNAZRDL7OBQSA";
-        String awsSecretKey = "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";
+        String awsSecretKey = "";
 
         AWSCredentials awsCredentials = new AWSCredentials(awsAccessKey, awsSecretKey);
 
