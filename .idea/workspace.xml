@@ -2,40 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="049c4c15-0286-494d-9f9a-233489b31cd3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.mf" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/com/podcastmodern/cdi/AmazonCDI$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/com/podcastmodern/rs/endpoints/UrlAPI$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/antlr-2.7.7.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/c3p0-0.9.2.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/dom4j-1.6.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/ehcache-core-2.4.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/hibernate-c3p0-5.0.2.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/hibernate-commons-annotations-5.0.0.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/hibernate-core-5.0.2.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/hibernate-ehcache-5.0.2.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/hibernate-entitymanager-5.0.2.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/jandex-1.2.2.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/javassist-3.18.1-GA.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/mchange-commons-java-0.2.3.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/lib/xml-apis-1.0.b2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/podcastmodern/cdi/AmazonCDI$1.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/PodcastModern.war" afterPath="$PROJECT_DIR$/target/PodcastModern.war" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/com/podcastmodern/cdi/AmazonCDI.class" afterPath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/com/podcastmodern/cdi/AmazonCDI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/com/podcastmodern/rs/endpoints/UrlAPI.class" afterPath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/com/podcastmodern/rs/endpoints/UrlAPI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/podcastmodern/cdi/AmazonCDI.class" afterPath="$PROJECT_DIR$/target/classes/com/podcastmodern/cdi/AmazonCDI.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/PodcastModern_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/PodcastModern_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PodcastModern.iml" afterPath="$PROJECT_DIR$/PodcastModern.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/podcastmodern/cdi/AmazonCDI.java" afterPath="$PROJECT_DIR$/src/main/java/com/podcastmodern/cdi/AmazonCDI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/podcastmodern/rs/endpoints/UrlAPI.java" afterPath="$PROJECT_DIR$/src/main/java/com/podcastmodern/rs/endpoints/UrlAPI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/PodcastModern/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/target/PodcastModern/META-INF/MANIFEST.MF" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/target/PodcastModern/WEB-INF/classes/hibernate.cfg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/hibernate.cfg.xml" afterPath="$PROJECT_DIR$/target/classes/hibernate.cfg.xml" />
     </list>
     <ignored path="PodcastModern.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,8 +28,8 @@
       <file leaf-file-name="AmazonCDI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/podcastmodern/cdi/AmazonCDI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6440281">
-              <caret line="105" column="34" selection-start-line="105" selection-start-column="34" selection-end-line="105" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.3325527">
+              <caret line="135" column="5" selection-start-line="135" selection-start-column="5" selection-end-line="135" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -1405,12 +1372,12 @@
       <workItem from="1476262078303" duration="885000" />
       <workItem from="1476284446992" duration="3335000" />
       <workItem from="1476341745702" duration="4552000" />
-      <workItem from="1476383337412" duration="5214000" />
+      <workItem from="1476383337412" duration="5649000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47644000" />
+    <option name="totallyTimeSpent" value="48079000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-5" y="23" width="1439" height="873" extended-state="6" />
@@ -1850,8 +1817,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/podcastmodern/cdi/AmazonCDI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6440281">
-          <caret line="105" column="34" selection-start-line="105" selection-start-column="34" selection-end-line="105" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.3325527">
+          <caret line="135" column="5" selection-start-line="135" selection-start-column="5" selection-end-line="135" selection-end-column="5" />
           <folding />
         </state>
       </provider>

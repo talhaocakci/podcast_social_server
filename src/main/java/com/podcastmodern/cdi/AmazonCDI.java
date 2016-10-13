@@ -8,7 +8,6 @@
  */
 package com.podcastmodern.cdi;
 
-import com.amazonaws.auth.PropertiesCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.internal.Constants;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
@@ -134,18 +133,6 @@ public class AmazonCDI implements Serializable {
 
     private String constructPublicLink(String bucketName, String key) {
         return "https://"+bucketName+".s3.amazonaws.com/"+ URLEncoder.encode(key);
-    }
-
-
-    protected AWSCredentials getCredentials() {
-        PropertiesCredentials credentials = null;
-
-        String awsAccessKey = "AKIAIOGBOQSLUTLRZRWA";
-        String awsSecretKey = "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";
-
-        AWSCredentials awsCredentials = new AWSCredentials(awsAccessKey, awsSecretKey);
-
-        return awsCredentials;
     }
 
     protected RestStorageService getStorageService(ProviderCredentials credentials, String endpointHostname)
