@@ -8,7 +8,11 @@
  */
 package com.podcastmodern.rs.endpoints;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.HttpMethod;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
@@ -19,27 +23,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.net.URL;
+import java.net.URLDecoder;
 
 @Controller
-@RequestMapping("/url/generateurl/{key}")
+@RequestMapping("/url/generateurl/{key}/{bucket}")
 public class UrlAPI {
 
     private AmazonS3 amazonS3Client;
 
     public UrlAPI() {
         super();
-        amazonS3Client = new AmazonS3Client(new com.amazonaws.auth.AWSCredentials() {
-            @Override
-            public String getAWSAccessKeyId() {
-                return "AKIAISPPNAZRDL7OBQSA";
-            }
-
-            @Override
-            public String getAWSSecretKey() {
-                return "V07+Fftn0QcxoyCQ6lz1K20Z8uNnxNS8QCRFwkK1";
-            }
-        });
+        ClientConfiguration clientConfiguration = new ClientConfiguration();
+        clientConfiguration.setSignerOverride("AWSS3V4SignerType");
+        amazonS3Client = new AmazonS3Client(
+            new ProfileCredentialsProvider(), clientConfiguration);
+        amazonS3Client.setRegion( Region.getRegion(Regions.AP_SOUTH_1));
     }
 
     public AmazonS3 getAmazonS3Client() {
@@ -52,16 +50,15 @@ public class UrlAPI {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public SecureUrl generateURL(@PathVariable String key) {
+    public SecureUrl generateURL(@PathVariable String key, @PathVariable String bucket) {
 
         SecureUrl secureUrl = new SecureUrl();
-        secureUrl.setUrl(generateSignedURL(key));
+        secureUrl.setUrl(generateSignedURL(bucket, key));
         return secureUrl;
 
     }
 
-    private String generateSignedURL(String key) {
-
+    private String generateSignedURL(String bucket, String key) {
 
 
         java.util.Date expiration = new java.util.Date();
@@ -70,11 +67,13 @@ public class UrlAPI {
         expiration.setTime(msec);
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
-            new GeneratePresignedUrlRequest("javacore-course", key);
+            new GeneratePresignedUrlRequest(bucket, URLDecoder.decode(key));
         generatePresignedUrlRequest.setMethod(HttpMethod.GET); // Default.
         generatePresignedUrlRequest.setExpiration(expiration);
 
-        URL s = amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest);
-        return s.toString();
+        return amazonS3Client.generatePresignedUrl(generatePresignedUrlRequest).toString();
+
+
     }
+
 }

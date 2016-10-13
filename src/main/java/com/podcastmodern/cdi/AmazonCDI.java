@@ -9,6 +9,7 @@
 package com.podcastmodern.cdi;
 
 import com.amazonaws.auth.PropertiesCredentials;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.internal.Constants;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.sun.syndication.feed.synd.SyndContent;
@@ -23,6 +24,8 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 import org.jets3t.service.Jets3tProperties;
 import org.jets3t.service.ServiceException;
+import org.jets3t.service.acl.GrantAndPermission;
+import org.jets3t.service.acl.Permission;
 import org.jets3t.service.impl.rest.httpclient.RestS3Service;
 import org.jets3t.service.impl.rest.httpclient.RestStorageService;
 import org.jets3t.service.model.S3Bucket;
@@ -37,6 +40,7 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +51,9 @@ public class AmazonCDI implements Serializable {
     private String bucketName;
 
     public void createRSS() throws ServiceException, IOException, FeedException {
-        RestS3Service s3Service = (RestS3Service) getStorageService(getCredentials(), Constants.S3_HOSTNAME);
+        com.amazonaws.auth.AWSCredentials credentials = new ProfileCredentialsProvider().getCredentials();
+        RestS3Service s3Service = (RestS3Service) getStorageService(
+            new AWSCredentials(credentials.getAWSAccessKeyId(), credentials.getAWSSecretKey()), Constants.S3_HOSTNAME);
 
         bucketName = "javacore-course";
         S3Bucket testBucket = s3Service.getOrCreateBucket(bucketName);
@@ -56,83 +62,86 @@ public class AmazonCDI implements Serializable {
             org.jets3t.service.acl.Permission.PERMISSION_FULL_CONTROL);
 
 
+
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
             .withBucketName(bucketName)
             .withPrefix("myprefix");
+
         S3Object[] objectListing;
         List entries = new ArrayList();
         SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
-
 
         feed.setTitle("Java Course");
         feed.setLink("javacore-course");
         feed.setDescription("This is the items for java core course");
 
 
-            objectListing = s3Service.listObjects(bucketName);
-            for (S3Object object :
-                objectListing) {
-                SyndEntry entry;
-                SyndContent description;
+        objectListing = s3Service.listObjects(bucketName);
+        for (S3Object object : objectListing) {
+            SyndEntry entry;
+            SyndContent description;
 
-                entry = new SyndEntryImpl();
-                entry.setTitle(object.getName().replace(".mp4",""));
+            long sizeInMB = object.getContentLength();
 
-                description = new SyndContentImpl();
-                description.setType("text/plain");
-                description.setValue(object.getName());
-                List<SyndEnclosure> enc = new ArrayList<SyndEnclosure>();
-                SyndEnclosure e = new SyndEnclosureImpl();
-                e.setUrl(object.getName());
+            org.jets3t.service.acl.AccessControlList controlList = s3Service.getObjectAcl(bucketName, object.getKey());
+          //  s3Client.getResourceUrl(bucket, s3RelativeToBucketPath);
 
-
-
-
-                enc.add(e);
-                entry.setEnclosures(enc);
-                entry.setDescription(description);
-                entries.add(entry);
+            String url = object.getName();
+            for( GrantAndPermission permission :controlList.getGrantAndPermissions()) {
+                if(permission.getPermission() == Permission.PERMISSION_READ) {
+                    url = constructPublicLink(bucketName, object.getName());
+                }
             }
+
+            entry = new SyndEntryImpl();
+            entry.setLink(object.getETag());
+            entry.setTitle(object.getName().replace(".mp4", "").replace("597468 - ",""));
+
+            description = new SyndContentImpl();
+            description.setType("text/plain");
+            description.setValue(object.getName());
+            List<SyndEnclosure> enc = new ArrayList<SyndEnclosure>();
+            SyndEnclosure e = new SyndEnclosureImpl();
+            e.setLength(sizeInMB);
+            e.setUrl(url);
+
+            enc.add(e);
+            entry.setEnclosures(enc);
+            entry.setDescription(description);
+            entries.add(entry);
+        }
 
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
 
-
-
-
-
-
         feed.setEntries(entries);
 
         SyndFeedOutput output = new SyndFeedOutput();
-        String s =output.outputString(feed);
+        String s = output.outputString(feed);
 
-
-
-        ec.responseReset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
+        ec.responseReset(); // Some JSF component library or some Filter might have set some headers in the buffer
         ec.setResponseContentType("application/xml"); // Check http://www.iana.org/assignments/media-types for all
-        // types. Use if necessary ExternalContext#getMimeType() for auto-detection based on filename.
-        ec.setResponseContentLength(s.length()); // Set it with the file size. This header is optional. It will work if it's
-        // omitted, but the download progress will be unknown.
+        ec.setResponseContentLength(s.length()); // Set it with the file size. This header is optional. It will work
         ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + "javacourse.xml" + "\""); // The Save As
-        // popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
 
         OutputStream outputstream = ec.getResponseOutputStream();
         outputstream.write(s.getBytes());
-        // Now you can write the InputStream of the file to the above OutputStream the usual way.
-        // ...
 
         fc.responseComplete(); // I
 
+    }
+
+    private String constructPublicLink(String bucketName, String key) {
+        return "https://"+bucketName+".s3.amazonaws.com/"+ URLEncoder.encode(key);
     }
 
 
     protected AWSCredentials getCredentials() {
         PropertiesCredentials credentials = null;
 
-        String awsAccessKey = "AKIAISPPNAZRDL7OBQSA";
-        String awsSecretKey = "";
+        String awsAccessKey = "AKIAIOGBOQSLUTLRZRWA";
+        String awsSecretKey = "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";
 
         AWSCredentials awsCredentials = new AWSCredentials(awsAccessKey, awsSecretKey);
 
