@@ -21,7 +21,7 @@ public class GenericDao {
 		session.beginTransaction();
 		session.save(o);
 		session.getTransaction().commit();
-		session.close();
+		
 		
 	}
 	
@@ -30,7 +30,7 @@ public class GenericDao {
 		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
 		
 		Object o =  session.get(c, key);
-		session.close();getClass();
+		
 		return o;
 		
 		

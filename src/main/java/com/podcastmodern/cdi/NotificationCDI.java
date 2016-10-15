@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,9 +20,13 @@ import javax.inject.Named;
 import org.json.JSONObject;
 
 import com.amazonaws.util.IOUtils;
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.podcastmodern.dao.ApplicationDao;
 import com.podcastmodern.entity.Application;
 import com.podcastmodern.entity.ApplicationUser;
+import com.podcastmodern.entity.Podcast;
 import com.podcastmodern.entity.User;
 
 @Named
@@ -33,9 +38,16 @@ public class NotificationCDI implements Serializable{
 	private String message;
 	private List<Application> applicationList;
 	private Application selectedApplication;
+	private Podcast selectedPodcast;
+	private String type;
+	private String webPage;
+	
+	private List <Podcast> podcastList;
 	
 	@Inject
 	private ApplicationDao applicationDao;
+	
+
 	
 	
 	
@@ -43,6 +55,12 @@ public class NotificationCDI implements Serializable{
 	public void init(){
 		
 		applicationList = applicationDao.findAll();
+	}
+	
+	public void updatePodcasts(){
+		podcastList = new ArrayList<Podcast>();
+		podcastList.addAll(selectedApplication.getPodcasts());
+		
 	}
 	
 	
@@ -63,16 +81,24 @@ public class NotificationCDI implements Serializable{
 	
 	private void sendGcmMessage(String gcmId){
 		  try {
-	            // Prepare JSON containing the GCM message content. What to send and where to send.
-	            JSONObject jGcmData = new JSONObject();
-	            JSONObject jData = new JSONObject();
-	            jData.put("message", message);
-	            // Where to send GCM message.
-	           
-	            jGcmData.put("to", gcmId);
+			  
 	            
-	            // What to send in GCM message.
-	            jGcmData.put("data", jData);
+	            
+	            Notification n = new Notification();
+	            NotificationData nd = new NotificationData();
+	            n.data = nd;
+	            
+	            nd.message = message;
+	            nd.type = type;
+	            if(type.equals("web"))
+	            nd.url = webPage;
+	            else
+	            	nd.url = selectedPodcast.getItunesUrl() != null && !selectedPodcast.equals("") ? selectedPodcast.getItunesUrl() : selectedPodcast.getOtherRssUrl();
+	            nd.podcast= selectedPodcast;
+	            n.to = gcmId;
+	           
+	            Gson gson = new Gson();
+	           
 
 	            // Create connection to send GCM Message request.
 	            URL url = new URL("https://android.googleapis.com/gcm/send");
@@ -84,7 +110,7 @@ public class NotificationCDI implements Serializable{
 
 	            // Send GCM message content.
 	            OutputStream outputStream = conn.getOutputStream();
-	            outputStream.write(jGcmData.toString().getBytes());
+	            outputStream.write(gson.toJson(n).getBytes());
 
 	            // Read GCM response.
 	            InputStream inputStream = conn.getInputStream();
@@ -138,9 +164,66 @@ public class NotificationCDI implements Serializable{
 	public void setSelectedApplication(Application selectedApplication) {
 		this.selectedApplication = selectedApplication;
 	}
-
-
-
 	
+	
+	public Podcast getSelectedPodcast() {
+		return selectedPodcast;
+	}
+
+	public void setSelectedPodcast(Podcast selectedPodcast) {
+		this.selectedPodcast = selectedPodcast;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
+	public String getWebPage() {
+		return webPage;
+	}
+
+
+	public void setWebPage(String webPage) {
+		this.webPage = webPage;
+	}
+
+
+
+
+
+	public List<Podcast> getPodcastList() {
+		return podcastList;
+	}
+
+	public void setPodcastList(List<Podcast> podcastList) {
+		this.podcastList = podcastList;
+	}
+
+
+
+
+
+	class Notification{
+		String to;
+		@SerializedName(value="data")
+		NotificationData data;
+		
+	}
+	
+	
+	
+	class NotificationData{
+		String message;
+		String type;
+		String url;
+		Podcast podcast;
+		
+	}
 	
 }

@@ -16,7 +16,7 @@ import com.podcastmodern.dao.PodcastDao;
 import com.podcastmodern.entity.Podcast;
 
 @Named
-@SessionScoped
+@ViewScoped
 public class PodcastPickListView implements Serializable {
 
 	@Inject 

@@ -44,9 +44,9 @@ public class DBQueryObject {
 		
 		Class classTypeOfEntry = value.getClass();	
 		
-		if (classTypeOfEntry == java.lang.Integer.class) {
+		if (classTypeOfEntry == Integer.class) {
 			return ((Integer)value).toString();
-		} else if (classTypeOfEntry == java.lang.String.class) {
+		} else if (classTypeOfEntry == String.class) {
 			return "'"+(String)value+"'";
 		}
 		else if (!classTypeOfEntry.isPrimitive()){

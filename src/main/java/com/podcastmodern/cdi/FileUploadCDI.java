@@ -32,5 +32,12 @@ public class FileUploadCDI implements Serializable {
 	            FacesContext.getCurrentInstance().addMessage(null, message);
 	        }
 	    }
+            
+            
+            public static void main(String[] args) {
+        
+              double y =   (1.018488 - 22.61071) / (1 +  Math.pow((1.55 / 1.684687), 32.90776)) + 22.61071;
+              System.out.println(y);
+    }
 	
 }

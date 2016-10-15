@@ -85,4 +85,11 @@ public class Application implements java.io.Serializable {
 		this.applicationUsers = applicationUsers;
 	}
 
+    @Override
+    public String toString() {
+        return "Application{" + "applicationId=" + applicationId + ", applicationName=" + applicationName + '}';
+    }
+        
+        
+
 }

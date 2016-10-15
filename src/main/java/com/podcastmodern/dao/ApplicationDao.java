@@ -13,22 +13,26 @@ import org.hibernate.criterion.Restrictions;
 
 import com.podcastmodern.entity.Application;
 import com.podcastmodern.entity.User;
+import java.util.Map;
+import javax.persistence.EntityManager;
+import org.hibernate.criterion.Projections;
+import org.primefaces.model.SortMeta;
 
 @Stateless
 @LocalBean
 public class ApplicationDao {
+	
 	
 	@PersistenceUnit(unitName = "podcastmodern")
 	EntityManagerFactory entityManagerFactory;
 	
 	
 	public void save(Application o){
-		
+		          System.out.println("---------------"+o);
 		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
-		session.beginTransaction();
-		session.save(o);
-		session.getTransaction().commit();
-		session.close();
+		
+              session.merge(o);
+              session.close();
 		
 	}
 	
@@ -53,12 +57,36 @@ public class ApplicationDao {
 		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
 		Criteria criteria = session.createCriteria(Application.class);
 	
-		return criteria.list();
+		List<Application> list =  criteria.list();
+                session.close();
+                return list;
 		
-	
+	}
+        
+        public List<Application> findAllByCriteria(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters){
+		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
+		Criteria criteria = session.createCriteria(Application.class);
+                criteria.setFirstResult(first);
+                criteria.setMaxResults(pageSize);
+                
+                for(Map.Entry<String, Object> entry: filters.entrySet()){
+                    criteria.add(Restrictions.ilike(entry.getKey(), entry.getValue()+"%"));
+		}
+            
+                
+		List<Application> list =  criteria.list();
+                session.close();
+                
+                return list;
 		
 	}
 	
-	
+	public Integer findCountByCriteria(List<SortMeta> multiSortMeta, Map<String, Object> filters){
+		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
+		Criteria criteria = session.createCriteria(Application.class);
+                return ((Long)criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+            
+		
+	}
 	
 }
