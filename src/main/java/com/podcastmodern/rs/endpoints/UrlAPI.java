@@ -37,7 +37,7 @@ public class UrlAPI {
         clientConfiguration.setSignerOverride("AWSS3V4SignerType");
         amazonS3Client = new AmazonS3Client(
             new ProfileCredentialsProvider(), clientConfiguration);
-        amazonS3Client.setRegion( Region.getRegion(Regions.AP_SOUTH_1));
+        amazonS3Client.setRegion(Region.getRegion(Regions.AP_SOUTH_1));
     }
 
     public AmazonS3 getAmazonS3Client() {

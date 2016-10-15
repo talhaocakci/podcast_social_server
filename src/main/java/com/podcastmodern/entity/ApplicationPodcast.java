@@ -18,38 +18,38 @@ import javax.persistence.Table;
 @Table(name = "application_podcast", catalog = "podcastmodern")
 public class ApplicationPodcast implements java.io.Serializable {
 
-	private ApplicationPodcastId id;
-	private Application application;
+    private ApplicationPodcastId id;
+    private Application application;
 
-	public ApplicationPodcast() {
-	}
+    public ApplicationPodcast() {
+    }
 
-	public ApplicationPodcast(ApplicationPodcastId id, Application application) {
-		this.id = id;
-		this.application = application;
-	}
+    public ApplicationPodcast(ApplicationPodcastId id, Application application) {
+        this.id = id;
+        this.application = application;
+    }
 
-	@EmbeddedId
+    @EmbeddedId
 
-	@AttributeOverrides({
-			@AttributeOverride(name = "applicationId", column = @Column(name = "application_id", nullable = false) ),
-			@AttributeOverride(name = "podcastId", column = @Column(name = "podcast_id", nullable = false) ) })
-	public ApplicationPodcastId getId() {
-		return this.id;
-	}
+    @AttributeOverrides({
+        @AttributeOverride(name = "applicationId", column = @Column(name = "application_id", nullable = false)),
+        @AttributeOverride(name = "podcastId", column = @Column(name = "podcast_id", nullable = false))})
+    public ApplicationPodcastId getId() {
+        return this.id;
+    }
 
-	public void setId(ApplicationPodcastId id) {
-		this.id = id;
-	}
+    public void setId(ApplicationPodcastId id) {
+        this.id = id;
+    }
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "application_id", nullable = false, insertable = false, updatable = false)
-	public Application getApplication() {
-		return this.application;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_id", nullable = false, insertable = false, updatable = false)
+    public Application getApplication() {
+        return this.application;
+    }
 
-	public void setApplication(Application application) {
-		this.application = application;
-	}
+    public void setApplication(Application application) {
+        this.application = application;
+    }
 
 }

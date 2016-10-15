@@ -1,93 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+>
 
 <h:head>
-	<title>JSF 2.0 Hello World</title>
+    <title>JSF 2.0 Hello World</title>
 </h:head>
 <h:body>
-	<h:form id="form">
-		<p:messages autoUpdate="true"></p:messages>
-		<h:outputText>Customer Dashboard</h:outputText>
-		<p:panelGrid columns="3">
-			<p:column>
-				<h:outputText value="Welcome"></h:outputText>
-				<h:outputText value="#{sessionCDI.customer.name}"></h:outputText>
-				<h:outputText value="#{sessionCDI.customer.surname}"></h:outputText>
-			</p:column>
-			<p:column>
-				<p:link outcome="orderhistory" value="Order history">
-					<!-- 			<f:param name="productId" value="10" /> -->
-				</p:link>
-			</p:column>
+    <h:form id="form">
+        <p:messages autoUpdate="true"></p:messages>
+        <h:outputText>Customer Dashboard</h:outputText>
+        <p:panelGrid columns="3">
+            <p:column>
+                <h:outputText value="Welcome"></h:outputText>
+                <h:outputText value="#{sessionCDI.customer.name}"></h:outputText>
+                <h:outputText value="#{sessionCDI.customer.surname}"></h:outputText>
+            </p:column>
+            <p:column>
+                <p:link outcome="orderhistory" value="Order history">
+                    <!-- 			<f:param name="productId" value="10" /> -->
+                </p:link>
+            </p:column>
 
-		</p:panelGrid>
-
-
-
-		<div style="width: 400px; margin: auto;">
+        </p:panelGrid>
 
 
-			Buckets:
-			<p:dataTable id="bucketlist" lazy="true"
-				value="#{orderCDI.bucketList}" var="bucket"
-				style="margin-bottom:60px;" rows="20"
-				selection="#{orderCDI.selectedBuckets}" selectionMode="multiple">
-
-				<p:column headerText="Name">
-					<h:outputText value="#{bucket.name}"></h:outputText>
-				</p:column>
-
-				<p:column headerText="Price">
-					<h:outputText value="#{bucket.price}"></h:outputText>
-				</p:column>
-
-			</p:dataTable>
-
-			Products:
-			<p:dataTable id="productlist" lazy="true" rows="20"
-				value="#{orderCDI.productList}" var="product"
-				style="margin-bottom:60px;" selection="#{orderCDI.selectedProducts}"
-				selectionMode="multiple">
-
-				<p:column headerText="Name">
-					<h:outputText value="#{product.name}"></h:outputText>
-				</p:column>
-
-				<p:column headerText="Price">
-					<h:outputText value="#{product.price}"></h:outputText>
-				</p:column>
-
-			</p:dataTable>
+        <div style="width: 400px; margin: auto;">
 
 
+            Buckets:
+            <p:dataTable id="bucketlist" lazy="true"
+                         value="#{orderCDI.bucketList}" var="bucket"
+                         style="margin-bottom:60px;" rows="20"
+                         selection="#{orderCDI.selectedBuckets}" selectionMode="multiple">
 
-			<p:dataTable id="addresslist" lazy="true" rows="20"
-				value="#{orderCDI.addressLazyDataModel}" var="address"
-				style="margin-bottom:60px;" selection="#{orderCDI.selectedAddress}"
-				selectionMode="single">
+                <p:column headerText="Name">
+                    <h:outputText value="#{bucket.name}"></h:outputText>
+                </p:column>
 
-				<p:column headerText="City">
-					<h:outputText value="#{address.city}"></h:outputText>
-				</p:column>
+                <p:column headerText="Price">
+                    <h:outputText value="#{bucket.price}"></h:outputText>
+                </p:column>
 
-				<p:column headerText="Open address">
-					<h:outputText value="#{address.addresstext}"></h:outputText>
-				</p:column>
+            </p:dataTable>
 
-			</p:dataTable>
+            Products:
+            <p:dataTable id="productlist" lazy="true" rows="20"
+                         value="#{orderCDI.productList}" var="product"
+                         style="margin-bottom:60px;" selection="#{orderCDI.selectedProducts}"
+                         selectionMode="multiple">
 
-			<p:commandButton value="Place order"
-				actionListener="#{orderCDI.makeOrder}" update=":form:addresslist"></p:commandButton>
+                <p:column headerText="Name">
+                    <h:outputText value="#{product.name}"></h:outputText>
+                </p:column>
+
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}"></h:outputText>
+                </p:column>
+
+            </p:dataTable>
 
 
-		</div>
+            <p:dataTable id="addresslist" lazy="true" rows="20"
+                         value="#{orderCDI.addressLazyDataModel}" var="address"
+                         style="margin-bottom:60px;" selection="#{orderCDI.selectedAddress}"
+                         selectionMode="single">
 
-	</h:form>
+                <p:column headerText="City">
+                    <h:outputText value="#{address.city}"></h:outputText>
+                </p:column>
+
+                <p:column headerText="Open address">
+                    <h:outputText value="#{address.addresstext}"></h:outputText>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:commandButton value="Place order"
+                             actionListener="#{orderCDI.makeOrder}" update=":form:addresslist"></p:commandButton>
+
+
+        </div>
+
+    </h:form>
 </h:body>
 </html>

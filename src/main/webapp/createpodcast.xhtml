@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title>Create new application metadata</title>
+    <title>Create new podcast metadata</title>
 
 </h:head>
 
 <h:body>
-	<f:facet name="last">
-		<h:outputStylesheet name="css/mycss.css" />
-	</f:facet>
+    <f:facet name="last">
+        <h:outputStylesheet name="css/mycss.css"/>
+    </f:facet>
 
-	<ui:include src="common/header.xhtml" />
+    <ui:include src="common/header.xhtml"/>
 
-	<div style="width: 300px; margin: auto;">
-		<h:form enctype="multipart/form-data">
+    <div style="width: 300px; margin: auto;">
+        <h:form enctype="multipart/form-data">
 
 
-			<h1 class="title">New Customer</h1>
-			<h:panelGrid columns="2">
-			Name
-			<p:inputText value="#{podcastCDI.newPodcast.name}"></p:inputText>
-			
-			Publisher
-			<p:inputText value="#{podcastCDI.newPodcast.publisher}"></p:inputText>
-			
-			Image URL
-			<p:inputText value="#{podcastCDI.newPodcast.imageurl}"></p:inputText>
-			
-			ITunes URL
-			<p:inputText value="#{podcastCDI.newPodcast.itunesUrl}"></p:inputText>
-			
-			Spreaker URL
-			<p:inputText value="#{podcastCDI.newPodcast.otherRssUrl}"></p:inputText>
-			
-			Author
-			<p:inputText value="#{podcastCDI.newPodcast.author}"></p:inputText>
-			
-			Description
-			<p:inputText value="#{podcastCDI.newPodcast.description}"></p:inputText>
+            <h1 class="title">New Podcast</h1>
+            <h:panelGrid columns="2">
+                Name
+                <p:inputText value="#{podcastCDI.newPodcast.name}"></p:inputText>
 
-			</h:panelGrid>
+                Publisher
+                <p:inputText value="#{podcastCDI.newPodcast.publisher}"></p:inputText>
 
-			<h:commandButton value="Save" action="#{podcastCDI.addPodcast}" styleClass="mybutton">
-			</h:commandButton>
-			
-			<p:fileUpload value="#{fileUploadCDI.file}" mode="simple" skinSimple="true"/>
- 
-    		<p:commandButton value="Submit" ajax="false" actionListener="#{fileUploadCDI.upload}" disabled="true" />
+                Image URL
+                <p:inputText value="#{podcastCDI.newPodcast.imageurl}"></p:inputText>
 
-			<h:outputText> This is our entrance page</h:outputText>
-		</h:form>
-	</div>
+                ITunes URL
+                <p:inputText value="#{podcastCDI.newPodcast.itunesUrl}"></p:inputText>
+
+                Spreaker URL
+                <p:inputText value="#{podcastCDI.newPodcast.otherRssUrl}"></p:inputText>
+
+                Author
+                <p:inputText value="#{podcastCDI.newPodcast.author}"></p:inputText>
+
+                Description
+                <p:inputText value="#{podcastCDI.newPodcast.description}"></p:inputText>
+
+            </h:panelGrid>
+
+            <h:commandButton value="Save" action="#{podcastCDI.addPodcast}" styleClass="mybutton">
+            </h:commandButton>
+
+            <p:fileUpload value="#{fileUploadCDI.file}" mode="simple"/>
+
+            <p:commandButton value="Submit" ajax="false" actionListener="#{fileUploadCDI.upload}" disabled="true"/>
+
+
+        </h:form>
+    </div>
 </h:body>
 </html>

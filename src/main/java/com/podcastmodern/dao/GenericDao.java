@@ -1,41 +1,39 @@
 package com.podcastmodern.dao;
 
-import java.io.Serializable;
+import org.hibernate.Session;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
-
-import org.hibernate.Session;
+import java.io.Serializable;
 
 @Stateless
 public class GenericDao {
-	
-	@PersistenceUnit(unitName = "podcastmodern")
-	EntityManagerFactory entityManagerFactory;
-	
-	
-	public void save(Object o){
-		
-		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
-		session.beginTransaction();
-		session.save(o);
-		session.getTransaction().commit();
-		
-		
-	}
-	
-	public Object get(Class c, Serializable key){
-		
-		Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
-		
-		Object o =  session.get(c, key);
-		
-		return o;
-		
-		
-	}
 
-	
-	
+    @PersistenceUnit(unitName = "podcastmodern")
+    EntityManagerFactory entityManagerFactory;
+
+
+    public void save(Object o) {
+
+        Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
+        session.beginTransaction();
+        session.save(o);
+        session.getTransaction().commit();
+
+
+    }
+
+    public Object get(Class c, Serializable key) {
+
+        Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
+
+        Object o = session.get(c, key);
+
+        return o;
+
+
+    }
+
+
 }

@@ -61,7 +61,6 @@ public class AmazonCDI implements Serializable {
             org.jets3t.service.acl.Permission.PERMISSION_FULL_CONTROL);
 
 
-
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
             .withBucketName(bucketName)
             .withPrefix("myprefix");
@@ -84,18 +83,18 @@ public class AmazonCDI implements Serializable {
             long sizeInMB = object.getContentLength();
 
             org.jets3t.service.acl.AccessControlList controlList = s3Service.getObjectAcl(bucketName, object.getKey());
-          //  s3Client.getResourceUrl(bucket, s3RelativeToBucketPath);
+            //  s3Client.getResourceUrl(bucket, s3RelativeToBucketPath);
 
             String url = object.getName();
-            for( GrantAndPermission permission :controlList.getGrantAndPermissions()) {
-                if(permission.getPermission() == Permission.PERMISSION_READ) {
+            for (GrantAndPermission permission : controlList.getGrantAndPermissions()) {
+                if (permission.getPermission() == Permission.PERMISSION_READ) {
                     url = constructPublicLink(bucketName, object.getName());
                 }
             }
 
             entry = new SyndEntryImpl();
             entry.setLink(object.getETag());
-            entry.setTitle(object.getName().replace(".mp4", "").replace("597468 - ",""));
+            entry.setTitle(object.getName().replace(".mp4", "").replace("597468 - ", ""));
 
             description = new SyndContentImpl();
             description.setType("text/plain");
@@ -132,7 +131,7 @@ public class AmazonCDI implements Serializable {
     }
 
     private String constructPublicLink(String bucketName, String key) {
-        return "https://"+bucketName+".s3.amazonaws.com/"+ URLEncoder.encode(key);
+        return "https://" + bucketName + ".s3.amazonaws.com/" + URLEncoder.encode(key);
     }
 
     protected RestStorageService getStorageService(ProviderCredentials credentials, String endpointHostname)

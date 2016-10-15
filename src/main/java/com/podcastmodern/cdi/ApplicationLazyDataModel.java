@@ -7,41 +7,38 @@ package com.podcastmodern.cdi;
 
 import com.podcastmodern.dao.ApplicationDao;
 import com.podcastmodern.entity.Application;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.enterprise.inject.Default;
-import javax.inject.Inject;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortMeta;
 
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
- *
  * @author ocakcit
  */
 
-public class ApplicationLazyDataModel extends LazyDataModel<Application>{
+public class ApplicationLazyDataModel extends LazyDataModel<Application> {
 
     @Inject
     ApplicationDao appDao;
-    
-    List<Application> applicationList = new  ArrayList<Application>();
-    
-    public ApplicationLazyDataModel(){
-        
+
+    List<Application> applicationList = new ArrayList<Application>();
+
+    public ApplicationLazyDataModel() {
+
     }
 
-    
 
     @Override
     public List<Application> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-       this.applicationList = appDao.findAllByCriteria(first, pageSize, multiSortMeta, filters);
-       this.setRowCount(appDao.findCountByCriteria(multiSortMeta, filters));
-       return this.applicationList;
+        this.applicationList = appDao.findAllByCriteria(first, pageSize, multiSortMeta, filters);
+        this.setRowCount(appDao.findCountByCriteria(multiSortMeta, filters));
+        return this.applicationList;
     }
-    
-    
-    
+
+
     @Override
     public int getRowCount() {
         return applicationList.size();
@@ -49,21 +46,17 @@ public class ApplicationLazyDataModel extends LazyDataModel<Application>{
 
     @Override
     public Application getRowData(String key) {
-        for(Application app: this.applicationList)
-        {
-            if(app.getApplicationId().toString().equals(key) )
+        for (Application app : this.applicationList) {
+            if (app.getApplicationId().toString().equals(key))
                 return app;
         }
         return null;
     }
 
-   @Override
+    @Override
     public Integer getRowKey(Application app) {
-		return app.getApplicationId();
+        return app.getApplicationId();
     }
-    
-    
-    
-    
-    
+
+
 }

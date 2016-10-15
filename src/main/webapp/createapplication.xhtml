@@ -1,50 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title>Create new application metadata</title>
+    <title>Create new application metadata</title>
 
 </h:head>
 
 <h:body>
-	<f:facet name="last">
-		<h:outputStylesheet name="css/mycss.css" />
-	</f:facet>
+    <f:facet name="last">
+        <h:outputStylesheet name="css/mycss.css"/>
+    </f:facet>
 
-	<ui:include src="common/header.xhtml" />
+    <ui:include src="common/header.xhtml"/>
 
-	<div style="width: 300px; margin: auto;">
-		<h:form>
+    <div style="width: 300px; margin: auto;">
+        <h:form>
 
-			<p:panelGrid columns="1">
+            <p:dialog widgetVar="createApplicationDialog">
 
 
-				Name:
-				<p:inputText
-					value="#{applicationCDI.newApplication.applicationName}"></p:inputText>
+                <p:panelGrid columns="1">
 
-				Podcasts:
-				<p:pickList id="applicationPickList" style="margin-left:10px;"
-					value="#{podcastPickListView.podcastsDualList}" var="podcast"
-					itemValue="#{podcast}" itemLabel="#{podcast.name}" converter="entityConverter"
-					showSourceControls="true" showTargetControls="true"
-					responsive="true" showSourceFilter="true" showTargetFilter="true"
-					filterMatchMode="contains">
 
-					<f:facet name="sourceCaption">Available</f:facet>
-					<f:facet name="targetCaption">Included</f:facet>
+                    Name:
+                    <p:inputText
+                            value="#{applicationCDI.newApplication.applicationName}"></p:inputText>
 
-				</p:pickList>
+                    Podcasts:
+                    <p:pickList id="applicationPickList" style="margin-left:10px;"
+                                value="#{podcastPickListView.podcastsDualList}" var="podcast"
+                                itemValue="#{podcast}" itemLabel="#{podcast.name}" converter="entityConverter"
+                                showSourceControls="true" showTargetControls="true"
+                                showSourceFilter="true" showTargetFilter="true"
+                                filterMatchMode="contains">
 
-				<h:commandButton action="#{applicationCDI.saveApplication}" value="Save"></h:commandButton>
-			</p:panelGrid>
-		</h:form>
-	</div>
+                        <f:facet name="sourceCaption">Available</f:facet>
+                        <f:facet name="targetCaption">Included</f:facet>
+
+                    </p:pickList>
+
+                    <h:commandButton action="#{applicationCDI.saveApplication}" value="Save"></h:commandButton>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+
+
+        <h:form>
+            <p:panelGrid id="updateApplicationDialogPanelGrid" columns="1">
+
+
+                Name update:
+                <p:inputText
+                        value="#{applicationCDI.selectedApplication.applicationName}"></p:inputText>
+
+                Podcasts:
+                <p:pickList id="applicationUpdatePickList" style="margin-left:10px;"
+                            value="#{podcastPickListView.podcastsDualList}" var="podcast"
+                            itemValue="#{podcast}" itemLabel="#{podcast.name}" converter="entityConverter"
+                            showSourceControls="true" showTargetControls="true"
+                            showSourceFilter="true" showTargetFilter="true"
+                            filterMatchMode="contains">
+
+                    <f:facet name="sourceCaption">Available</f:facet>
+                    <f:facet name="targetCaption">Included</f:facet>
+
+                </p:pickList>
+
+                <p:commandButton action="#{applicationCDI.updateApplication}" value="Update"></p:commandButton>
+
+            </p:panelGrid>
+
+
+            <p:commandButton value="Create application" type="button" onclick="PF('createApplicationDialog').show();"/>
+            <p:commandButton value="Update application" type="button"/>
+
+
+            <p:dataTable var="app" value="#{applicationCDI.appLazyDataModel}"
+                         sortMode="multiple"
+                         paginatorPosition="bottom" lazy="true" paginator="true" rows="10"
+                         selectionMode="single" selection="#{applicationCDI.selectedApplication}"
+                         id="allApps">
+                <p:ajax event="rowSelect" update="@form" listener="#{applicationCDI.fillDetails}"/>
+                <p:column headerText="App Id">
+                    <h:outputText value="#{app.applicationId}"/>
+                </p:column>
+                <p:column headerText="App Name" filterBy="#{app.applicationName}">
+                    <h:outputText value="#{app.applicationName}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+    </div>
 </h:body>
 </html>

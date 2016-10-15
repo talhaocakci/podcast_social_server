@@ -10,53 +10,53 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class UserCloudmessagingId implements java.io.Serializable {
 
-	private int messagingId;
-	private int userId;
+    private int messagingId;
+    private int userId;
 
-	public UserCloudmessagingId() {
-	}
+    public UserCloudmessagingId() {
+    }
 
-	public UserCloudmessagingId(int messagingId, int userId) {
-		this.messagingId = messagingId;
-		this.userId = userId;
-	}
+    public UserCloudmessagingId(int messagingId, int userId) {
+        this.messagingId = messagingId;
+        this.userId = userId;
+    }
 
-	@Column(name = "messaging_id", nullable = false)
-	public int getMessagingId() {
-		return this.messagingId;
-	}
+    @Column(name = "messaging_id", nullable = false)
+    public int getMessagingId() {
+        return this.messagingId;
+    }
 
-	public void setMessagingId(int messagingId) {
-		this.messagingId = messagingId;
-	}
+    public void setMessagingId(int messagingId) {
+        this.messagingId = messagingId;
+    }
 
-	@Column(name = "user_id", nullable = false)
-	public int getUserId() {
-		return this.userId;
-	}
+    @Column(name = "user_id", nullable = false)
+    public int getUserId() {
+        return this.userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof UserCloudmessagingId))
-			return false;
-		UserCloudmessagingId castOther = (UserCloudmessagingId) other;
+    public boolean equals(Object other) {
+        if ((this == other))
+            return true;
+        if ((other == null))
+            return false;
+        if (!(other instanceof UserCloudmessagingId))
+            return false;
+        UserCloudmessagingId castOther = (UserCloudmessagingId) other;
 
-		return (this.getMessagingId() == castOther.getMessagingId()) && (this.getUserId() == castOther.getUserId());
-	}
+        return (this.getMessagingId() == castOther.getMessagingId()) && (this.getUserId() == castOther.getUserId());
+    }
 
-	public int hashCode() {
-		int result = 17;
+    public int hashCode() {
+        int result = 17;
 
-		result = 37 * result + this.getMessagingId();
-		result = 37 * result + this.getUserId();
-		return result;
-	}
+        result = 37 * result + this.getMessagingId();
+        result = 37 * result + this.getUserId();
+        return result;
+    }
 
 }

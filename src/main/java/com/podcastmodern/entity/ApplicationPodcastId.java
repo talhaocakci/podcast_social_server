@@ -10,54 +10,54 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ApplicationPodcastId implements java.io.Serializable {
 
-	private int applicationId;
-	private int podcastId;
+    private int applicationId;
+    private int podcastId;
 
-	public ApplicationPodcastId() {
-	}
+    public ApplicationPodcastId() {
+    }
 
-	public ApplicationPodcastId(int applicationId, int podcastId) {
-		this.applicationId = applicationId;
-		this.podcastId = podcastId;
-	}
+    public ApplicationPodcastId(int applicationId, int podcastId) {
+        this.applicationId = applicationId;
+        this.podcastId = podcastId;
+    }
 
-	@Column(name = "application_id", nullable = false)
-	public int getApplicationId() {
-		return this.applicationId;
-	}
+    @Column(name = "application_id", nullable = false)
+    public int getApplicationId() {
+        return this.applicationId;
+    }
 
-	public void setApplicationId(int applicationId) {
-		this.applicationId = applicationId;
-	}
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
+    }
 
-	@Column(name = "podcast_id", nullable = false)
-	public int getPodcastId() {
-		return this.podcastId;
-	}
+    @Column(name = "podcast_id", nullable = false)
+    public int getPodcastId() {
+        return this.podcastId;
+    }
 
-	public void setPodcastId(int podcastId) {
-		this.podcastId = podcastId;
-	}
+    public void setPodcastId(int podcastId) {
+        this.podcastId = podcastId;
+    }
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof ApplicationPodcastId))
-			return false;
-		ApplicationPodcastId castOther = (ApplicationPodcastId) other;
+    public boolean equals(Object other) {
+        if ((this == other))
+            return true;
+        if ((other == null))
+            return false;
+        if (!(other instanceof ApplicationPodcastId))
+            return false;
+        ApplicationPodcastId castOther = (ApplicationPodcastId) other;
 
-		return (this.getApplicationId() == castOther.getApplicationId())
-				&& (this.getPodcastId() == castOther.getPodcastId());
-	}
+        return (this.getApplicationId() == castOther.getApplicationId())
+            && (this.getPodcastId() == castOther.getPodcastId());
+    }
 
-	public int hashCode() {
-		int result = 17;
+    public int hashCode() {
+        int result = 17;
 
-		result = 37 * result + this.getApplicationId();
-		result = 37 * result + this.getPodcastId();
-		return result;
-	}
+        result = 37 * result + this.getApplicationId();
+        result = 37 * result + this.getPodcastId();
+        return result;
+    }
 
 }
