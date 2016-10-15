@@ -46,7 +46,7 @@ public class ApplicationDao {
     public List<User> findusersOfApp(int appId) {
         Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
         return session.createQuery("select u from User as u inner join u.applicationUsers as au where au.id" +
-			".applicationId = " + appId).list();
+            ".applicationId = " + appId).list();
 
     }
 
@@ -62,7 +62,7 @@ public class ApplicationDao {
     }
 
     public List<Application> findAllByCriteria(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String,
-		Object> filters) {
+        Object> filters) {
         Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
         Criteria criteria = session.createCriteria(Application.class);
         criteria.setFirstResult(first);

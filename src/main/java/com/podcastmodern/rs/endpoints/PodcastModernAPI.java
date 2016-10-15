@@ -49,9 +49,8 @@ public class PodcastModernAPI {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public
     @ResponseBody
-    void registerUser(@RequestParam String userString, @PathVariable Integer appid) {
+    public void registerUser(@RequestParam String userString, @PathVariable Integer appid) {
         try {
 
             genericDao = (GenericDao) new InitialContext().lookup("java:global/PodcastModern/GenericDao");
