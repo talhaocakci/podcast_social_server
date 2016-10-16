@@ -1,6 +1,7 @@
 syntax: glob
 
-build/
+app/build/
+app/libs/
 out/
 dist/
 .idea/
@@ -19,3 +20,5 @@ findbugs/
 version.properties
 build.properties
 container_settings.json
+gradlew
+
