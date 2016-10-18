@@ -5,7 +5,7 @@ import com.podcastmodern.dao.GenericDao;
 import com.podcastmodern.entity.Application;
 import com.podcastmodern.entity.ApplicationUser;
 import com.podcastmodern.entity.ApplicationUserId;
-import com.podcastmodern.entity.User;
+import com.podcastmodern.rs.endpoints.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,22 +44,32 @@ public class PodcastModernAPI {
         return app;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces="application/json")
     @ResponseBody
-    public void registerUser(@RequestBody User user, @PathVariable Integer appid) {
+    public Integer registerUser(@RequestBody User user, @PathVariable Integer appid) {
         try {
+
+            com.podcastmodern.entity.User userEntity = new com.podcastmodern.entity.User();
+            userEntity.setCountry(user.getLocation());
+            userEntity.setDisplayName(user.getDisplayName());
+            userEntity.setEmail(user.getEmail());
+            userEntity.setName(user.getName());
+            userEntity.setSurname(user.getSurname());
+            userEntity.setGcmToken(user.getGcmToken());
+            userEntity.setFbToken(user.getFbToken());
+            userEntity.setGoogleToken(user.getGoogleToken());
 
             genericDao = (GenericDao) new InitialContext().lookup("java:global/PodcastModern/GenericDao");
 
             Set<Application> applicaationSet = new HashSet<Application>();
-            Set<User> userSet = new HashSet<User>();
-            userSet.add(user);
+            Set<com.podcastmodern.entity.User> userSet = new HashSet<com.podcastmodern.entity.User>();
+            userSet.add(userEntity);
 
             Application app = (Application) genericDao.get(Application.class, appid);
             ApplicationUser appUser = new ApplicationUser();
             appUser.setApplication(app);
 
-            appUser.setUser(user);
+            appUser.setUser(userEntity);
             Set<ApplicationUser> appUsers = new HashSet<ApplicationUser>();
             appUsers.add(appUser);
             app.setApplicationUsers(appUsers);
@@ -68,19 +78,20 @@ public class PodcastModernAPI {
 
             genericDao.save(user);
 
-            ApplicationUserId id = new ApplicationUserId(user.getUserId(), appid);
+            ApplicationUserId id = new ApplicationUserId(userEntity.getUserId(), appid);
             appUser.setId(id);
 
             appUser.setFirstRegisterTime(new Date());
             for (ApplicationUser appUserInternal : app.getApplicationUsers())
                 genericDao.save(appUserInternal);
 
+            return userEntity.getUserId();
+
         } catch (NamingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
+        return 0;
     }
 
 }

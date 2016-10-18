@@ -40,27 +40,6 @@ public class User implements java.io.Serializable {
     public User() {
     }
 
-    public User(String name, String surname, String minAge, String maxAge, String country, String language,
-                String email, String fbToken, String googleToken, String twitterToken, String gender, String
-                    displayName,
-                String gcmToken, Set applicationUsers, Set userCloudmessagings) {
-        this.name = name;
-        this.surname = surname;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.country = country;
-        this.language = language;
-        this.email = email;
-        this.fbToken = fbToken;
-        this.googleToken = googleToken;
-        this.twitterToken = twitterToken;
-        this.gender = gender;
-        this.displayName = displayName;
-        this.gcmToken = gcmToken;
-        this.applicationUsers = applicationUsers;
-        this.userCloudmessagings = userCloudmessagings;
-    }
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
 
