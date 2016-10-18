@@ -76,7 +76,7 @@ public class PodcastModernAPI {
 
             applicaationSet.add(app);
 
-            genericDao.save(user);
+            genericDao.save(userEntity);
 
             ApplicationUserId id = new ApplicationUserId(userEntity.getUserId(), appid);
             appUser.setId(id);
