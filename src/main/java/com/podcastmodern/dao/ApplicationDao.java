@@ -12,12 +12,13 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-@Stateless
+@Stateless(mappedName = "ApplicationDao")
 @LocalBean
-public class ApplicationDao {
+public class ApplicationDao implements Serializable {
 
 
     @PersistenceUnit(unitName = "podcastmodern")

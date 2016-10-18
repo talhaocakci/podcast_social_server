@@ -8,7 +8,7 @@ import javax.persistence.PersistenceUnit;
 import java.io.Serializable;
 
 @Stateless
-public class GenericDao {
+public class GenericDao implements Serializable {
 
     @PersistenceUnit(unitName = "podcastmodern")
     EntityManagerFactory entityManagerFactory;

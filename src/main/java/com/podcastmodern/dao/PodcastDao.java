@@ -7,10 +7,11 @@ import org.hibernate.Session;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateless
-public class PodcastDao {
+public class PodcastDao implements Serializable {
 
 
     @PersistenceUnit(unitName = "podcastmodern")
