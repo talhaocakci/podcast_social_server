@@ -1,8 +1,5 @@
 package com.podcastmodern.rs.endpoints;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.podcastmodern.dao.ApplicationDao;
 import com.podcastmodern.dao.GenericDao;
 import com.podcastmodern.entity.Application;
@@ -11,14 +8,13 @@ import com.podcastmodern.entity.ApplicationUserId;
 import com.podcastmodern.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,20 +46,14 @@ public class PodcastModernAPI {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public void registerUser(@RequestParam String userString, @PathVariable Integer appid) {
+    public void registerUser(@RequestBody User user, @PathVariable Integer appid) {
         try {
 
             genericDao = (GenericDao) new InitialContext().lookup("java:global/PodcastModern/GenericDao");
 
-
-            User user =
-                new ObjectMapper().readValue(userString, User.class);
-            user.getName();
-
             Set<Application> applicaationSet = new HashSet<Application>();
             Set<User> userSet = new HashSet<User>();
             userSet.add(user);
-
 
             Application app = (Application) genericDao.get(Application.class, appid);
             ApplicationUser appUser = new ApplicationUser();
@@ -85,18 +75,6 @@ public class PodcastModernAPI {
             for (ApplicationUser appUserInternal : app.getApplicationUsers())
                 genericDao.save(appUserInternal);
 
-            System.out.println(user);
-
-
-        } catch (JsonParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (NamingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
