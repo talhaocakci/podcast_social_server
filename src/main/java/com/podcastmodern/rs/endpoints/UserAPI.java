@@ -11,7 +11,9 @@ package com.podcastmodern.rs.endpoints;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.podcastmodern.dao.GenericDao;
 import com.podcastmodern.entity.User;
+import com.podcastmodern.rs.endpoints.entity.LoginRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,8 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.PathParam;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @Controller
 @RequestMapping("/user")
@@ -57,5 +62,18 @@ public class UserAPI {
 
     }
 
+    @RequestMapping(value = "loginByGoogle", method = RequestMethod.POST, consumes = "application/json", produces =
+        "application/json")
+    @ResponseBody
+    public void loginByGoogle(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) throws
+        GeneralSecurityException, IOException {
+        User verifiedUser = PodcastModernAPI.verifyGoogleToken(loginRequest.getGoogleToken());
+
+        if(verifiedUser != null) {
+            HttpSession session = httpServletRequest.getSession(true);
+            session.setAttribute("membermode", "premium");
+        }
+
+    }
 
 }
