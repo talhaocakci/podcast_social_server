@@ -35,5 +35,16 @@ public class GenericDao implements Serializable {
 
     }
 
+    public Object load(Class c, Serializable key) {
+
+        Session session = (Session) (entityManagerFactory.createEntityManager().getDelegate());
+
+        Object o = session.load(c, key);
+
+        return o;
+
+
+    }
+
 
 }

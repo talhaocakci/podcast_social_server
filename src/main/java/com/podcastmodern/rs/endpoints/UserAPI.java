@@ -10,9 +10,12 @@ package com.podcastmodern.rs.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.podcastmodern.dao.GenericDao;
+import com.podcastmodern.entity.Subscription;
 import com.podcastmodern.entity.User;
 import com.podcastmodern.rs.endpoints.entity.LoginRequest;
+import com.podcastmodern.service.SubscriptionService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +26,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.PathParam;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -32,6 +34,8 @@ import java.security.GeneralSecurityException;
 public class UserAPI {
 
     GenericDao genericDao;
+
+    SubscriptionService subscriptionService;
 
     @RequestMapping(value = "insert", method = RequestMethod.POST)
     @ResponseBody
@@ -48,17 +52,16 @@ public class UserAPI {
 
     }
 
-    @RequestMapping(value = "/{userId}/subscribe", method = RequestMethod.POST)
+    @RequestMapping(value = "subscribe/{userId}/{appId}", method = RequestMethod.POST, consumes = "application/json",
+        produces =
+        "application/json")
     @ResponseBody
-    public void getApplication(@RequestParam String userString, @PathParam("userId") String userId, @RequestParam String sku)
-        throws IOException, NamingException {
+    public void getApplication(@RequestBody Subscription subscription,  @PathVariable("userId") Integer userId,
+                               @PathVariable("appId") Integer appId) throws NamingException {
 
-        User user =
-            new ObjectMapper().readValue(userString, User.class);
+        subscriptionService = (SubscriptionService) new InitialContext().lookup("java:global/PodcastModern/SubscriptionService");
 
-        genericDao = (GenericDao) new InitialContext().lookup("java:global/PodcastModern/GenericDao");
-
-        genericDao.save(user);
+        subscriptionService.saveSubscription(subscription, appId, userId );
 
     }
 
