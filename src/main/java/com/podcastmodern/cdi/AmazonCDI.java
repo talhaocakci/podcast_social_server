@@ -69,7 +69,7 @@ public class AmazonCDI implements Serializable {
         S3Bucket testBucket = s3Service.getOrCreateBucket(bucketName);
         org.jets3t.service.acl.AccessControlList bucketAcl = s3Service.getBucketAcl(testBucket);
         bucketAcl.grantPermission(org.jets3t.service.acl.GroupGrantee.ALL_USERS,
-            org.jets3t.service.acl.Permission.PERMISSION_FULL_CONTROL);
+            Permission.PERMISSION_READ_ACP);
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
             .withBucketName(bucketName)
@@ -88,6 +88,9 @@ public class AmazonCDI implements Serializable {
         for (S3Object object : objectListing) {
             SyndEntry entry;
             SyndContent description;
+
+            if(!object.getName().contains(".mp4") && !object.getName().contains(".mp3") )
+                continue;
 
             long sizeInMB = object.getContentLength();
 
@@ -138,7 +141,7 @@ public class AmazonCDI implements Serializable {
 
         ec.responseReset(); // Some JSF component library or some Filter might have set some headers in the buffer
         ec.setResponseContentType("application/xml"); // Check http://www.iana.org/assignments/media-types for all
-        ec.setResponseContentLength(s.length()); // Set it with the file size. This header is optional. It will work
+        //ec.setResponseContentLength(s.length()); // Set it with the file size. This header is optional. It will work
         ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + bucketName + ".xml" + "\""); // The
         // Save As
 
