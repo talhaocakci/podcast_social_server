@@ -23,8 +23,10 @@
 
         <h:form id="form">
 
-
+            <h:outputText value="Bucket name" />
             <p:inputText value="#{amazonCDI.bucketName}"></p:inputText>
+            <h:outputText value="Udemy Link " />
+            <p:inputText value="#{amazonCDI.udemyLink}"></p:inputText>
             <p:commandButton ajax="false" value="Create RSS" action="#{amazonCDI.createRSS}"></p:commandButton>
 
 

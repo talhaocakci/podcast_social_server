@@ -11,6 +11,7 @@ package com.podcastmodern.cdi;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.internal.Constants;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.podcastmodern.rs.endpoints.PodcastData;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEnclosure;
@@ -31,6 +32,10 @@ import org.jets3t.service.model.S3Bucket;
 import org.jets3t.service.model.S3Object;
 import org.jets3t.service.security.AWSCredentials;
 import org.jets3t.service.security.ProviderCredentials;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -41,25 +46,30 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Named
 @SessionScoped
 public class AmazonCDI implements Serializable {
 
-    private String bucketName;
+    private String bucketName = "javacore-course";
+
+    private String udemyLink = "https://www.udemy.com/java-8-core-training-/";
 
     public void createRSS() throws ServiceException, IOException, FeedException {
+
+        Map<String, PodcastData> dataMap = parseFromUdemy();
+
         com.amazonaws.auth.AWSCredentials credentials = new ProfileCredentialsProvider().getCredentials();
         RestS3Service s3Service = (RestS3Service) getStorageService(
             new AWSCredentials(credentials.getAWSAccessKeyId(), credentials.getAWSSecretKey()), Constants.S3_HOSTNAME);
 
-        bucketName = "javacore-course";
         S3Bucket testBucket = s3Service.getOrCreateBucket(bucketName);
         org.jets3t.service.acl.AccessControlList bucketAcl = s3Service.getBucketAcl(testBucket);
         bucketAcl.grantPermission(org.jets3t.service.acl.GroupGrantee.ALL_USERS,
             org.jets3t.service.acl.Permission.PERMISSION_FULL_CONTROL);
-
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
             .withBucketName(bucketName)
@@ -74,7 +84,6 @@ public class AmazonCDI implements Serializable {
         feed.setLink("javacore-course");
         feed.setDescription("This is the items for java core course");
 
-
         objectListing = s3Service.listObjects(bucketName);
         for (S3Object object : objectListing) {
             SyndEntry entry;
@@ -83,7 +92,8 @@ public class AmazonCDI implements Serializable {
             long sizeInMB = object.getContentLength();
 
             org.jets3t.service.acl.AccessControlList controlList = s3Service.getObjectAcl(bucketName, object.getKey());
-            //  s3Client.getResourceUrl(bucket, s3RelativeToBucketPath);
+
+            object.setName(object.getName().replace(".mp4", "").replace("597468 - ", ""));
 
             String url = object.getName();
             for (GrantAndPermission permission : controlList.getGrantAndPermissions()) {
@@ -94,11 +104,19 @@ public class AmazonCDI implements Serializable {
 
             entry = new SyndEntryImpl();
             entry.setLink(object.getETag());
-            entry.setTitle(object.getName().replace(".mp4", "").replace("597468 - ", ""));
+            entry.setTitle(object.getName());
 
             description = new SyndContentImpl();
             description.setType("text/plain");
-            description.setValue(object.getName());
+
+            String value = "";
+            String key = entry.getTitle();
+            if(key.contains(" - "))
+                key = key.split(" - ")[1];
+            if(dataMap.get(key) != null) {
+                value = dataMap.get(key).getDescription();
+            }
+            description.setValue(value);
             List<SyndEnclosure> enc = new ArrayList<SyndEnclosure>();
             SyndEnclosure e = new SyndEnclosureImpl();
             e.setLength(sizeInMB);
@@ -121,7 +139,8 @@ public class AmazonCDI implements Serializable {
         ec.responseReset(); // Some JSF component library or some Filter might have set some headers in the buffer
         ec.setResponseContentType("application/xml"); // Check http://www.iana.org/assignments/media-types for all
         ec.setResponseContentLength(s.length()); // Set it with the file size. This header is optional. It will work
-        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + "javacourse.xml" + "\""); // The Save As
+        ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + bucketName + ".xml" + "\""); // The
+        // Save As
 
         OutputStream outputstream = ec.getResponseOutputStream();
         outputstream.write(s.getBytes());
@@ -129,6 +148,35 @@ public class AmazonCDI implements Serializable {
         fc.responseComplete(); // I
 
     }
+
+    private Map<String, PodcastData> parseFromUdemy() throws IOException {
+        Document doc = Jsoup.connect(udemyLink).get();
+        Elements metadataElements = doc.select(".cur-list-row");
+
+        PodcastData podcastData;
+
+        Map<String, PodcastData> podcastDataMap = new HashMap<>();
+
+        for (int i = 0; i < metadataElements.size(); i++) {
+            Element titleSection = metadataElements.get(i);
+
+            String title = titleSection.select(".lec-link").text().trim();
+            String duration = titleSection.select(".tar").text().trim();
+
+            String description = "";
+
+            if (metadataElements.get(i).nextElementSibling() != null
+                && metadataElements.get(i).nextElementSibling().hasClass("cur-list-row-detail")) {
+                description = metadataElements.get(i).nextElementSibling().text().trim();
+            }
+
+            podcastData = new PodcastData(title, duration, description);
+            podcastDataMap.put(title, podcastData);
+
+        }
+        return podcastDataMap;
+    }
+
 
     private String constructPublicLink(String bucketName, String key) {
         return "https://" + bucketName + ".s3.amazonaws.com/" + URLEncoder.encode(key);
@@ -147,5 +195,13 @@ public class AmazonCDI implements Serializable {
 
     public void setBucketName(String bucketName) {
         this.bucketName = bucketName;
+    }
+
+    public String getUdemyLink() {
+        return udemyLink;
+    }
+
+    public void setUdemyLink(String udemyLink) {
+        this.udemyLink = udemyLink;
     }
 }
