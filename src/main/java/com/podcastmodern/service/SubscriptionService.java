@@ -26,13 +26,15 @@ public class SubscriptionService implements Serializable {
     @Inject
     private ApplicationDao applicationDao;
 
-    public void saveSubscription(Subscription subscription, Integer appId, Integer userId) {
+    public Subscription saveSubscription(Subscription subscription, Integer appId, Integer userId) {
 
         subscription.setApplication(applicationDao.findApplicationById(appId));
 
         subscription.setUser((User) genericDao.load(User.class, userId));
 
         genericDao.save(subscription);
+
+        return subscription;
     }
 
 
