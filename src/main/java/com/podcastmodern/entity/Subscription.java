@@ -32,14 +32,14 @@ public class Subscription {
     private String memberType;
     private String price;
     private String currency;
-
+    private String payload;
 
     public Subscription() {
     }
 
     public Subscription(Long subscriptionId, String subscriptionItem, Application application, User user, Date
         subscriptionDate, Date trialEndDate, String refreshPeriod, Integer refreshCount, String memberType, String
-        price, String currency) {
+        price, String currency, String payload) {
         this.subscriptionId = subscriptionId;
         this.subscriptionItem = subscriptionItem;
         this.application = application;
@@ -155,5 +155,12 @@ public class Subscription {
         this.currency = currency;
     }
 
+    @Column(name="payload")
+    public String getPayload() {
+        return payload;
+    }
 
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
 }

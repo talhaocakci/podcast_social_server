@@ -96,7 +96,7 @@ public class AmazonCDI implements Serializable {
 
             org.jets3t.service.acl.AccessControlList controlList = s3Service.getObjectAcl(bucketName, object.getKey());
 
-            object.setName(object.getName().replace(".mp4", "").replace("597468 - ", ""));
+
 
             String url = object.getName();
             for (GrantAndPermission permission : controlList.getGrantAndPermissions()) {
@@ -104,6 +104,8 @@ public class AmazonCDI implements Serializable {
                     url = constructPublicLink(bucketName, object.getName());
                 }
             }
+
+            object.setName(object.getName().replace(".mp4", "").replace("597468 - ", ""));
 
             entry = new SyndEntryImpl();
             entry.setLink(object.getETag());
