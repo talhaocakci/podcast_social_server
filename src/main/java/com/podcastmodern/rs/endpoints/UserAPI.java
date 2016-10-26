@@ -56,12 +56,14 @@ public class UserAPI {
         produces =
         "application/json")
     @ResponseBody
-    public Subscription getApplication(@RequestBody Subscription subscription,  @PathVariable("userId") Integer userId,
+    public Long getApplication(@RequestBody Subscription subscription,  @PathVariable("userId") Integer userId,
                                @PathVariable("appId") Integer appId) throws NamingException {
 
         subscriptionService = (SubscriptionService) new InitialContext().lookup("java:global/PodcastModern/SubscriptionService");
 
-        return subscriptionService.saveSubscription(subscription, appId, userId );
+        Subscription subs =  subscriptionService.saveSubscription(subscription, appId, userId);
+
+        return subs.getSubscriptionId();
 
     }
 
