@@ -30,9 +30,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configure(HttpSecurity http) throws Exception {
         http.
             anonymous().disable()
-            .requestMatchers().antMatchers("/api/**")
+            .requestMatchers().antMatchers("/application/**")
             .and().authorizeRequests()
-            .antMatchers("/api/**").access("hasRole('ADMIN')")
+            .antMatchers("/application/**").access("hasRole('ADMIN')")
             .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
     }
 

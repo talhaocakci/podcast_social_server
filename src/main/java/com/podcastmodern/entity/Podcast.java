@@ -30,13 +30,16 @@ public class Podcast implements java.io.Serializable {
     private String imageurl;
     private String author;
     private String name;
+    private String bucketName;
 
 
     public Podcast() {
     }
 
-    public Podcast(String itunesUrl, String otherRssUrl, String description, Integer currentItemCount, String publisher,
-                   Boolean isPublic, Date lastItemDate, String imageurl, String author, String name) {
+    public Podcast(Integer podcastId, String itunesUrl, String otherRssUrl, String description, Integer
+        currentItemCount, String publisher, Boolean isPublic, Date lastItemDate, String imageurl, String author,
+                   String name, String bucketName) {
+        this.podcastId = podcastId;
         this.itunesUrl = itunesUrl;
         this.otherRssUrl = otherRssUrl;
         this.description = description;
@@ -47,7 +50,7 @@ public class Podcast implements java.io.Serializable {
         this.imageurl = imageurl;
         this.author = author;
         this.name = name;
-
+        this.bucketName = bucketName;
     }
 
     @Id
@@ -153,5 +156,20 @@ public class Podcast implements java.io.Serializable {
         this.name = name;
     }
 
+    public Boolean getPublic() {
+        return isPublic;
+    }
 
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    @Column(name = "bucket_name", length = 50)
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
+    }
 }
